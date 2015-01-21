@@ -160,7 +160,7 @@
       var self = this || Howler;
       var audioTest = new Audio();
       var mpegTest = audioTest.canPlayType('audio/mpeg;').replace(/^no$/, '');
-      
+
       self._codecs = {
         mp3: !!(mpegTest || audioTest.canPlayType('audio/mp3;').replace(/^no$/, '')),
         mpeg: !!mpegTest,
@@ -847,7 +847,7 @@
             var dir = from > to ? 'out' : 'in';
             var steps = diff / 0.01;
             var stepLen = len / steps;
-            
+
             (function() {
               var vol = from;
               var interval = setInterval(function(id) {
@@ -1148,7 +1148,7 @@
     _emit: function(event, id, msg) {
       var self = this;
       var events = self['_on' + event];
-      
+
       // Loop through event store and fire all functions.
       for (var i=0; i<events.length; i++) {
         if (!events[i].id || events[i].id === id) {
@@ -1421,7 +1421,7 @@
 
       // Fire an error event and pass back the code.
       self._parent._emit('loaderror', self._id, self._node.error ? self._node.error.code : 0);
-      
+
       // Clear the event listener.
       self._node.removeEventListener('error', self._errorListener, false);
     },
@@ -1504,7 +1504,7 @@
         for (var i=0; i<data.length; ++i) {
           dataView[i] = data.charCodeAt(i);
         }
-        
+
         decodeAudioData(dataView.buffer, self);
       } else {
         // Load the buffer from the URL.
@@ -1592,7 +1592,11 @@
    */
   function setupAudioContext() {
     try {
-      if (typeof AudioContext !== 'undefined') {
+      if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        // disable webAudio in cordova iOS apps
+        // because it breaks the Media plugin
+        usingWebAudio = false;
+      } else if (typeof AudioContext !== 'undefined') {
         ctx = new AudioContext();
       } else if (typeof webkitAudioContext !== 'undefined') {
         ctx = new webkitAudioContext();
