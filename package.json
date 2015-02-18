@@ -24,6 +24,7 @@
   "files": [
     "howler.js",
     "howler.min.js",
-    "LICENSE.md"
+    "LICENSE.md",
+    "src/howler.core.js"
   ]
 }
